@@ -107,13 +107,6 @@
       overflow-x: auto;
     }
 
-    .note {
-      font-size: 13px;
-      color: #667085;
-      margin-top: 18px;
-      line-height: 1.5;
-    }
-
     @media (max-width: 850px) {
       .grid {
         grid-template-columns: 1fr;
@@ -128,7 +121,6 @@
     <div class="header">
       <img src="media/logo-amitai.png" alt="AMITAI">
       <h1>Generador de Firmas AMITAI</h1>
-      <p>Completa tus datos, selecciona el banner activo y copia tu firma institucional.</p>
     </div>
 
     <div class="grid">
@@ -153,16 +145,12 @@
         <select id="banner" onchange="updateSignature()">
           <option value="ethics">Ethics Learning</option>
           <option value="empresas">Empresas Más Éticas</option>
-          <option value="integriline">Integri-Line</option>
           <option value="none">Sin banner</option>
         </select>
 
         <button class="primary" onclick="copySignature()">Copiar firma</button>
         <button class="secondary" onclick="copyHTML()">Copiar HTML</button>
 
-        <p class="note">
-          Puedes usar banners en PNG, JPG o GIF. Para Outlook, el primer frame del GIF debe funcionar como imagen estática.
-        </p>
       </section>
 
       <section class="card">
@@ -180,16 +168,12 @@
 
     const banners = {
       ethics: {
-        img: "media/banner-ethics.gif",
+        img: "media/bannermail.gif",
         link: "https://www.amitai.com/es/ethics-learning/"
       },
       empresas: {
         img: "media/banner-empresas.png",
         link: "https://www.empresasmaseticas.com/"
-      },
-      integriline: {
-        img: "media/banner-integriline.png",
-        link: "https://www.integriline.com/"
       },
       none: null
     };
@@ -207,56 +191,40 @@
         <tr>
           <td style="padding-bottom:14px;">
             <a href="${banner.link}" target="_blank">
-              <img src="${banner.img}" alt="Banner AMITAI" style="display:block; width:520px; max-width:100%; border:0;">
+              <img src="${banner.img}" style="display:block; width:520px; max-width:100%; border:0;">
             </a>
           </td>
         </tr>
       ` : "";
 
       return `
-        <table cellpadding="0" cellspacing="0" border="0" style="font-family:Arial, sans-serif; color:#1d2433; max-width:540px;">
+        <table style="font-family:Arial; max-width:520px;">
+          
           ${bannerHTML}
 
           <tr>
             <td>
-              <table cellpadding="0" cellspacing="0" border="0">
+              <table>
                 <tr>
-                  <td style="padding-right:16px; vertical-align:top;">
-                    <img src="${logoUrl}" alt="AMITAI" style="width:118px; display:block; border:0;">
+                  <td style="padding-right:16px;">
+                    <img src="${logoUrl}" style="width:110px;">
                   </td>
 
-                  <td style="border-left:2px solid #003c71; padding-left:16px; vertical-align:top;">
-                    <div style="font-size:16px; font-weight:700; color:#003c71;">
-                      ${name}
-                    </div>
+                  <td style="border-left:2px solid #003c71; padding-left:16px;">
+                    <strong style="color:#003c71;">${name}</strong><br>
+                    ${position}<br><br>
 
-                    <div style="font-size:13px; color:#555; margin-top:3px;">
-                      ${position}
-                    </div>
+                    <a href="mailto:${email}">${email}</a><br>
+                    ${phone}<br>
+                    ${country}<br><br>
 
-                    <div style="font-size:13px; color:#555; margin-top:8px;">
-                      <strong>Email:</strong>
-                      <a href="mailto:${email}" style="color:#003c71; text-decoration:none;">${email}</a>
-                    </div>
-
-                    <div style="font-size:13px; color:#555; margin-top:3px;">
-                      <strong>Tel:</strong> ${phone}
-                    </div>
-
-                    <div style="font-size:13px; color:#555; margin-top:3px;">
-                      <strong>Oficina:</strong> ${country}
-                    </div>
-
-                    <div style="font-size:13px; margin-top:8px;">
-                      <a href="https://www.amitai.com/" target="_blank" style="color:#003c71; text-decoration:none; font-weight:700;">
-                        www.amitai.com
-                      </a>
-                    </div>
+                    <a href="https://www.amitai.com/">www.amitai.com</a>
                   </td>
                 </tr>
               </table>
             </td>
           </tr>
+
         </table>
       `;
     }
@@ -271,21 +239,14 @@
       range.selectNode(signature);
       window.getSelection().removeAllRanges();
       window.getSelection().addRange(range);
-
-      try {
-        document.execCommand("copy");
-        alert("Firma copiada. Ahora pégala en Gmail u Outlook.");
-      } catch (err) {
-        alert("No se pudo copiar automáticamente. Selecciona la firma manualmente.");
-      }
-
-      window.getSelection().removeAllRanges();
+      document.execCommand("copy");
+      alert("Firma copiada");
     }
 
     function copyHTML() {
       const html = getSignatureHTML();
       navigator.clipboard.writeText(html);
-      alert("HTML copiado.");
+      alert("HTML copiado");
     }
 
     updateSignature();

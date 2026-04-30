@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Generador de Firmas AMITAI</title>
 
   <style>
@@ -35,6 +35,11 @@
       color: #003c71;
     }
 
+    .header p {
+      color: #667085;
+      font-size: 16px;
+    }
+
     .grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -48,12 +53,22 @@
       box-shadow: 0 14px 40px rgba(0, 60, 113, 0.08);
     }
 
-    input {
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: #003c71;
+    }
+
+    input, select {
       width: 100%;
       padding: 12px 14px;
       margin-bottom: 16px;
       border: 1px solid #d0d5dd;
       border-radius: 10px;
+      font-size: 14px;
+      box-sizing: border-box;
     }
 
     button {
@@ -64,6 +79,7 @@
       font-weight: 700;
       cursor: pointer;
       margin-top: 10px;
+      font-size: 15px;
     }
 
     .primary {
@@ -71,11 +87,24 @@
       color: white;
     }
 
+    .secondary {
+      background: #eaf3fb;
+      color: #003c71;
+    }
+
+    .preview-title {
+      font-size: 14px;
+      color: #667085;
+      margin-bottom: 16px;
+      font-weight: 700;
+    }
+
     .signature-box {
       border: 1px dashed #ccd6e0;
       padding: 22px;
       border-radius: 14px;
       background: #fff;
+      overflow-x: auto;
     }
 
     @media (max-width: 850px) {
@@ -90,23 +119,42 @@
   <main class="page">
 
     <div class="header">
-      <img src="https://TU-SITIO.netlify.app/media/logo-amitai.png">
+      <img src="media/logo-amitai.png" alt="AMITAI">
       <h1>Generador de Firmas AMITAI</h1>
     </div>
 
     <div class="grid">
 
       <section class="card">
+        <label>Nombre completo</label>
         <input id="name" value="Juan Palao García" oninput="updateSignature()" />
+
+        <label>Puesto</label>
         <input id="position" value="Gerente de Marketing" oninput="updateSignature()" />
+
+        <label>Correo</label>
         <input id="email" value="juan.palao@amitai.com" oninput="updateSignature()" />
+
+        <label>Teléfono</label>
         <input id="phone" value="+52 55 0000 0000" oninput="updateSignature()" />
+
+        <label>País / Oficina</label>
         <input id="country" value="México" oninput="updateSignature()" />
 
+        <label>Banner de temporada</label>
+        <select id="banner" onchange="updateSignature()">
+          <option value="ethics">Ethics Learning</option>
+          <option value="empresas">Empresas Más Éticas</option>
+          <option value="none">Sin banner</option>
+        </select>
+
         <button class="primary" onclick="copySignature()">Copiar firma</button>
+        <button class="secondary" onclick="copyHTML()">Copiar HTML</button>
+
       </section>
 
       <section class="card">
+        <div class="preview-title">Vista previa de la firma</div>
         <div class="signature-box">
           <div id="signature"></div>
         </div>
@@ -116,14 +164,18 @@
   </main>
 
   <script>
-    // ⚠️ CAMBIA SOLO ESTA URL POR TU SITIO REAL
-    const BASE_URL = "https://TU-SITIO.netlify.app";
+    const logoUrl = "media/logo-amitai.png";
 
-    const logoUrl = BASE_URL + "/media/logo-amitai.png";
-
-    const banner = {
-      img: BASE_URL + "/media/banner-mail.gif",
-      link: "https://www.amitai.com/es/ethics-learning/"
+    const banners = {
+      ethics: {
+        img: "media/bannermail.gif",
+        link: "https://www.amitai.com/es/ethics-learning/"
+      },
+      empresas: {
+        img: "media/banner-empresas.png",
+        link: "https://www.empresasmaseticas.com/"
+      },
+      none: null
     };
 
     function getSignatureHTML() {
@@ -132,17 +184,23 @@
       const email = document.getElementById("email").value;
       const phone = document.getElementById("phone").value;
       const country = document.getElementById("country").value;
+      const bannerKey = document.getElementById("banner").value;
+      const banner = banners[bannerKey];
+
+      const bannerHTML = banner ? `
+        <tr>
+          <td style="padding-bottom:14px;">
+            <a href="${banner.link}" target="_blank">
+              <img src="${banner.img}" style="display:block; width:520px; max-width:100%; border:0;">
+            </a>
+          </td>
+        </tr>
+      ` : "";
 
       return `
-        <table cellpadding="0" cellspacing="0" border="0" style="font-family:Arial; max-width:520px;">
-
-          <tr>
-            <td style="padding-bottom:12px;">
-              <a href="${banner.link}" target="_blank">
-                <img src="${banner.img}" style="width:520px; max-width:100%;">
-              </a>
-            </td>
-          </tr>
+        <table style="font-family:Arial; max-width:520px;">
+          
+          ${bannerHTML}
 
           <tr>
             <td>
@@ -176,13 +234,19 @@
     }
 
     function copySignature() {
-      const el = document.getElementById("signature");
+      const signature = document.getElementById("signature");
       const range = document.createRange();
-      range.selectNode(el);
+      range.selectNode(signature);
       window.getSelection().removeAllRanges();
       window.getSelection().addRange(range);
       document.execCommand("copy");
       alert("Firma copiada");
+    }
+
+    function copyHTML() {
+      const html = getSignatureHTML();
+      navigator.clipboard.writeText(html);
+      alert("HTML copiado");
     }
 
     updateSignature();

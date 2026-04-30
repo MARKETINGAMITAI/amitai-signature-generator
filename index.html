@@ -13,7 +13,7 @@
     .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
     .card { background: #ffffff; border-radius: 18px; padding: 28px; box-shadow: 0 14px 40px rgba(0,60,113,0.08); }
     label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 6px; color: #003c71; }
-    input { width: 100%; padding: 12px 14px; margin-bottom: 16px; border: 1px solid #d0d5dd; border-radius: 10px; box-sizing: border-box; }
+    input, select { width: 100%; padding: 12px 14px; margin-bottom: 16px; border: 1px solid #d0d5dd; border-radius: 10px; box-sizing: border-box; }
     button { width: 100%; border: none; border-radius: 12px; padding: 14px 18px; font-weight: 700; cursor: pointer; margin-top: 10px; }
     .primary { background: #003c71; color: white; }
     .secondary { background: #eaf3fb; color: #003c71; }
@@ -31,19 +31,36 @@
       <section class="card">
         <label>Nombre completo</label>
         <input id="name" value="Juan Palao García" oninput="updateSignature()" />
+
         <label>Puesto</label>
         <input id="position" value="Gerente de Marketing" oninput="updateSignature()" />
+
         <label>Empresa / División</label>
         <input id="company" value="AMITAI LATAM" oninput="updateSignature()" />
+
         <label>Correo</label>
         <input id="email" value="juan.palao@amitai.com" oninput="updateSignature()" />
+
         <label>Teléfono</label>
         <input id="phone" value="+52 55 0000 0000" oninput="updateSignature()" />
+
         <label>Ubicación / Oficina</label>
         <input id="country" value="México" oninput="updateSignature()" />
+
+        <label>Banner</label>
+        <select id="banner" onchange="updateSignature()">
+          <option value="https://amitaisignaturegenerator.netlify.app/media/banner-mail.gif">
+            Banner Ethics Learning
+          </option>
+          <option value="https://amitaisignaturegenerator.netlify.app/media/e+ebanner">
+            Banner Empresas Más Éticas
+          </option>
+        </select>
+
         <button class="primary" onclick="copySignature()">Copiar firma</button>
         <button class="secondary" onclick="copyHTML()">Copiar HTML</button>
       </section>
+
       <section class="card">
         <div class="signature-box">
           <div id="signature"></div>
@@ -54,16 +71,16 @@
 
   <script>
     const logoUrl    = "https://amitaisignaturegenerator.netlify.app/media/logo-amitai.png";
-    const bannerUrl  = "https://amitaisignaturegenerator.netlify.app/media/banner-mail.gif";
     const bannerLink = "https://www.amitai.com/es/ethics-learning/";
 
     function getSignatureHTML() {
-      const name     = document.getElementById("name").value;
-      const position = document.getElementById("position").value;
-      const company  = document.getElementById("company").value;
-      const email    = document.getElementById("email").value;
-      const phone    = document.getElementById("phone").value;
-      const country  = document.getElementById("country").value;
+      const name      = document.getElementById("name").value;
+      const position  = document.getElementById("position").value;
+      const company   = document.getElementById("company").value;
+      const email     = document.getElementById("email").value;
+      const phone     = document.getElementById("phone").value;
+      const country   = document.getElementById("country").value;
+      const bannerUrl = document.getElementById("banner").value;
 
       return `
         <table cellpadding="0" cellspacing="0" border="0" style="font-family:Arial; max-width:560px;">

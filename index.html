@@ -48,7 +48,15 @@
       box-shadow: 0 14px 40px rgba(0, 60, 113, 0.08);
     }
 
-    input, select {
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: #003c71;
+    }
+
+    input {
       width: 100%;
       padding: 12px 14px;
       margin-bottom: 16px;
@@ -69,6 +77,11 @@
     .primary {
       background: #003c71;
       color: white;
+    }
+
+    .secondary {
+      background: #eaf3fb;
+      color: #003c71;
     }
 
     .signature-box {
@@ -98,13 +111,25 @@
 
       <!-- FORM -->
       <section class="card">
+
+        <label>Nombre completo</label>
         <input id="name" value="Juan Palao García" oninput="updateSignature()" />
+
+        <label>Puesto</label>
         <input id="position" value="Gerente de Marketing" oninput="updateSignature()" />
+
+        <label>Correo</label>
         <input id="email" value="juan.palao@amitai.com" oninput="updateSignature()" />
+
+        <label>Teléfono</label>
         <input id="phone" value="+52 55 0000 0000" oninput="updateSignature()" />
+
+        <label>Ubicación / Oficina</label>
         <input id="country" value="México" oninput="updateSignature()" />
 
         <button class="primary" onclick="copySignature()">Copiar firma</button>
+        <button class="secondary" onclick="copyHTML()">Copiar HTML</button>
+
       </section>
 
       <!-- PREVIEW -->
@@ -132,7 +157,6 @@
       return `
         <table cellpadding="0" cellspacing="0" border="0" style="font-family:Arial; max-width:520px;">
 
-          <!-- BANNER -->
           <tr>
             <td style="padding-bottom:12px;">
               <a href="${bannerLink}" target="_blank">
@@ -141,7 +165,6 @@
             </td>
           </tr>
 
-          <!-- INFO -->
           <tr>
             <td>
               <table>
@@ -183,6 +206,12 @@
       window.getSelection().addRange(range);
       document.execCommand("copy");
       alert("Firma copiada");
+    }
+
+    function copyHTML() {
+      const html = getSignatureHTML();
+      navigator.clipboard.writeText(html);
+      alert("HTML copiado");
     }
 
     updateSignature();

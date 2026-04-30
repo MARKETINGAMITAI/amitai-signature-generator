@@ -77,6 +77,12 @@
       border-radius: 14px;
       background: #fff;
     }
+
+    @media (max-width: 850px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 
@@ -90,6 +96,7 @@
 
     <div class="grid">
 
+      <!-- FORM -->
       <section class="card">
         <input id="name" value="Juan Palao García" oninput="updateSignature()" />
         <input id="position" value="Gerente de Marketing" oninput="updateSignature()" />
@@ -97,15 +104,10 @@
         <input id="phone" value="+52 55 0000 0000" oninput="updateSignature()" />
         <input id="country" value="México" oninput="updateSignature()" />
 
-        <select id="banner" onchange="updateSignature()">
-          <option value="ethics">Ethics Learning</option>
-          <option value="empresas">Empresas Más Éticas</option>
-          <option value="none">Sin banner</option>
-        </select>
-
         <button class="primary" onclick="copySignature()">Copiar firma</button>
       </section>
 
+      <!-- PREVIEW -->
       <section class="card">
         <div class="signature-box">
           <div id="signature"></div>
@@ -118,16 +120,9 @@
   <script>
     const logoUrl = "media/logo-amitai.png";
 
-    const banners = {
-      ethics: {
-        img: "media/banner-ethics.gif",
-        link: "https://www.amitai.com/es/ethics-learning/"
-      },
-      empresas: {
-        img: "media/banner-empresas.png",
-        link: "https://www.empresasmaseticas.com/"
-      },
-      none: null
+    const banner = {
+      img: "media/banner-mail.gif",
+      link: "https://www.amitai.com/es/ethics-learning/"
     };
 
     function getSignatureHTML() {
@@ -136,41 +131,62 @@
       const email = document.getElementById("email").value;
       const phone = document.getElementById("phone").value;
       const country = document.getElementById("country").value;
-      const banner = banners[document.getElementById("banner").value];
-
-      const bannerHTML = banner ? `
-        <tr>
-          <td style="padding-bottom:12px;">
-            <a href="${banner.link}" target="_blank">
-              <img src="${banner.img}" style="width:520px; max-width:100%;">
-            </a>
-          </td>
-        </tr>
-      ` : "";
 
       return `
-        <table style="font-family:Arial; max-width:520px;">
-          
-          ${bannerHTML}
+        <table cellpadding="0" cellspacing="0" border="0" style="font-family:Arial, sans-serif; max-width:520px;">
 
+          <!-- BANNER -->
+          <tr>
+            <td style="padding-bottom:12px;">
+              <a href="${banner.link}" target="_blank">
+                <img src="${banner.img}" style="width:520px; max-width:100%; border:0;">
+              </a>
+            </td>
+          </tr>
+
+          <!-- INFO -->
           <tr>
             <td>
-              <table>
+              <table cellpadding="0" cellspacing="0" border="0">
                 <tr>
-                  <td style="padding-right:16px;">
-                    <img src="${logoUrl}" style="width:110px;">
+
+                  <!-- LOGO -->
+                  <td style="padding-right:16px; vertical-align:top;">
+                    <img src="${logoUrl}" style="width:110px; display:block;">
                   </td>
 
-                  <td style="border-left:2px solid #003c71; padding-left:16px;">
-                    <strong style="color:#003c71;">${name}</strong><br>
-                    ${position}<br><br>
+                  <!-- TEXT -->
+                  <td style="border-left:2px solid #003c71; padding-left:16px; vertical-align:top;">
+                    <div style="font-size:16px; font-weight:700; color:#003c71;">
+                      ${name}
+                    </div>
 
-                    <a href="mailto:${email}">${email}</a><br>
-                    ${phone}<br>
-                    ${country}<br><br>
+                    <div style="font-size:13px; margin-top:4px;">
+                      ${position}
+                    </div>
 
-                    <a href="https://www.amitai.com/">www.amitai.com</a>
+                    <div style="font-size:13px; margin-top:8px;">
+                      <a href="mailto:${email}" style="color:#003c71; text-decoration:none;">
+                        ${email}
+                      </a>
+                    </div>
+
+                    <div style="font-size:13px;">
+                      ${phone}
+                    </div>
+
+                    <div style="font-size:13px;">
+                      ${country}
+                    </div>
+
+                    <div style="font-size:13px; margin-top:6px;">
+                      <a href="https://www.amitai.com/" target="_blank" style="color:#003c71; text-decoration:none;">
+                        www.amitai.com
+                      </a>
+                    </div>
+
                   </td>
+
                 </tr>
               </table>
             </td>
@@ -191,7 +207,7 @@
       window.getSelection().removeAllRanges();
       window.getSelection().addRange(range);
       document.execCommand("copy");
-      alert("Firma copiada");
+      alert("Firma copiada. Pégala en tu correo.");
     }
 
     updateSignature();

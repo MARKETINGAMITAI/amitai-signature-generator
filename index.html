@@ -1,188 +1,201 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Generador de Firmas AMITAI</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Generador de Firmas AMITAI</title>
 
-<style>
-body {
-  margin:0;
-  font-family: Arial, sans-serif;
-  background:#f4f7fb;
-}
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f7fb;
+      color: #1d2433;
+    }
 
-.page {
-  max-width:1100px;
-  margin:auto;
-  padding:40px 20px;
-}
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 48px 24px;
+    }
 
-.header {
-  text-align:center;
-  margin-bottom:30px;
-}
+    .header {
+      text-align: center;
+      margin-bottom: 36px;
+    }
 
-.header img {
-  width:140px;
-}
+    .header img {
+      width: 150px;
+      margin-bottom: 18px;
+    }
 
-.grid {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:20px;
-}
+    .header h1 {
+      margin: 0;
+      font-size: 32px;
+      color: #003c71;
+    }
 
-.card {
-  background:#fff;
-  padding:20px;
-  border-radius:14px;
-}
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+    }
 
-input, select {
-  width:100%;
-  padding:10px;
-  margin-bottom:12px;
-}
+    .card {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 28px;
+      box-shadow: 0 14px 40px rgba(0, 60, 113, 0.08);
+    }
 
-button {
-  width:100%;
-  padding:12px;
-  margin-top:8px;
-  border:none;
-  cursor:pointer;
-}
+    input, select {
+      width: 100%;
+      padding: 12px 14px;
+      margin-bottom: 16px;
+      border: 1px solid #d0d5dd;
+      border-radius: 10px;
+    }
 
-.primary {
-  background:#003c71;
-  color:#fff;
-}
+    button {
+      width: 100%;
+      border: none;
+      border-radius: 12px;
+      padding: 14px 18px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 10px;
+    }
 
-.signature-box {
-  border:1px dashed #ccc;
-  padding:20px;
-}
-</style>
+    .primary {
+      background: #003c71;
+      color: white;
+    }
+
+    .signature-box {
+      border: 1px dashed #ccd6e0;
+      padding: 22px;
+      border-radius: 14px;
+      background: #fff;
+    }
+  </style>
 </head>
 
 <body>
+  <main class="page">
 
-<div class="page">
+    <div class="header">
+      <img src="media/logo-amitai.png" alt="AMITAI">
+      <h1>Generador de Firmas AMITAI</h1>
+    </div>
 
-<div class="header">
-  <img src="media/logo-amitai.png">
-  <h2>Generador de Firmas AMITAI</h2>
-</div>
+    <div class="grid">
 
-<div class="grid">
+      <section class="card">
+        <input id="name" value="Juan Palao García" oninput="updateSignature()" />
+        <input id="position" value="Gerente de Marketing" oninput="updateSignature()" />
+        <input id="email" value="juan.palao@amitai.com" oninput="updateSignature()" />
+        <input id="phone" value="+52 55 0000 0000" oninput="updateSignature()" />
+        <input id="country" value="México" oninput="updateSignature()" />
 
-<div class="card">
+        <select id="banner" onchange="updateSignature()">
+          <option value="ethics">Ethics Learning</option>
+          <option value="empresas">Empresas Más Éticas</option>
+          <option value="none">Sin banner</option>
+        </select>
 
-<input id="name" placeholder="Nombre" value="Juan Palao García" oninput="updateSignature()">
-<input id="position" placeholder="Puesto" value="Gerente de Marketing" oninput="updateSignature()">
-<input id="email" placeholder="Correo" value="juan@amitai.com" oninput="updateSignature()">
-<input id="phone" placeholder="Teléfono" value="+52 55 0000 0000" oninput="updateSignature()">
-<input id="country" placeholder="País" value="México" oninput="updateSignature()">
+        <button class="primary" onclick="copySignature()">Copiar firma</button>
+      </section>
 
-<select id="banner" onchange="updateSignature()">
-  <option value="ethics">Ethics Learning</option>
-  <option value="empresas">Empresas Más Éticas</option>
-  <option value="none">Sin banner</option>
-</select>
+      <section class="card">
+        <div class="signature-box">
+          <div id="signature"></div>
+        </div>
+      </section>
 
-<button class="primary" onclick="copySignature()">Copiar firma</button>
+    </div>
+  </main>
 
-</div>
+  <script>
+    const logoUrl = "media/logo-amitai.png";
 
-<div class="card">
-<div class="signature-box" id="signature"></div>
-</div>
+    const banners = {
+      ethics: {
+        img: "media/banner-ethics.gif",
+        link: "https://www.amitai.com/es/ethics-learning/"
+      },
+      empresas: {
+        img: "media/banner-empresas.png",
+        link: "https://www.empresasmaseticas.com/"
+      },
+      none: null
+    };
 
-</div>
-</div>
+    function getSignatureHTML() {
+      const name = document.getElementById("name").value;
+      const position = document.getElementById("position").value;
+      const email = document.getElementById("email").value;
+      const phone = document.getElementById("phone").value;
+      const country = document.getElementById("country").value;
+      const banner = banners[document.getElementById("banner").value];
 
-<script>
+      const bannerHTML = banner ? `
+        <tr>
+          <td style="padding-bottom:12px;">
+            <a href="${banner.link}" target="_blank">
+              <img src="${banner.img}" style="width:520px; max-width:100%;">
+            </a>
+          </td>
+        </tr>
+      ` : "";
 
-const logoUrl = "media/logo-amitai.png";
+      return `
+        <table style="font-family:Arial; max-width:520px;">
+          
+          ${bannerHTML}
 
-const banners = {
-  ethics: {
-    img: "media/banner-ethics.gif",
-    link: "https://www.amitai.com/es/ethics-learning/"
-  },
-  empresas: {
-    img: "media/banner-empresas.png",
-    link: "https://www.empresasmaseticas.com/"
-  },
-  none: null
-};
-
-function getSignatureHTML() {
-
-  const name = document.getElementById("name").value;
-  const position = document.getElementById("position").value;
-  const email = document.getElementById("email").value;
-  const phone = document.getElementById("phone").value;
-  const country = document.getElementById("country").value;
-  const banner = banners[document.getElementById("banner").value];
-
-  const bannerHTML = banner ? `
-  <tr>
-    <td>
-      <a href="${banner.link}" target="_blank">
-        <img src="${banner.img}" style="width:520px; max-width:100%;">
-      </a>
-    </td>
-  </tr>` : "";
-
-  return `
-  <table style="font-family:Arial; max-width:520px;">
-    
-    ${bannerHTML}
-
-    <tr>
-      <td>
-        <table>
           <tr>
-            <td style="padding-right:15px;">
-              <img src="${logoUrl}" style="width:110px;">
-            </td>
+            <td>
+              <table>
+                <tr>
+                  <td style="padding-right:16px;">
+                    <img src="${logoUrl}" style="width:110px;">
+                  </td>
 
-            <td style="border-left:2px solid #003c71; padding-left:15px;">
-              <strong style="color:#003c71;">${name}</strong><br>
-              ${position}<br><br>
+                  <td style="border-left:2px solid #003c71; padding-left:16px;">
+                    <strong style="color:#003c71;">${name}</strong><br>
+                    ${position}<br><br>
 
-              <a href="mailto:${email}">${email}</a><br>
-              ${phone}<br>
-              ${country}<br><br>
+                    <a href="mailto:${email}">${email}</a><br>
+                    ${phone}<br>
+                    ${country}<br><br>
 
-              <a href="https://www.amitai.com/">www.amitai.com</a>
+                    <a href="https://www.amitai.com/">www.amitai.com</a>
+                  </td>
+                </tr>
+              </table>
             </td>
           </tr>
+
         </table>
-      </td>
-    </tr>
+      `;
+    }
 
-  </table>`;
-}
+    function updateSignature() {
+      document.getElementById("signature").innerHTML = getSignatureHTML();
+    }
 
-function updateSignature() {
-  document.getElementById("signature").innerHTML = getSignatureHTML();
-}
+    function copySignature() {
+      const signature = document.getElementById("signature");
+      const range = document.createRange();
+      range.selectNode(signature);
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(range);
+      document.execCommand("copy");
+      alert("Firma copiada");
+    }
 
-function copySignature() {
-  const el = document.getElementById("signature");
-  const range = document.createRange();
-  range.selectNode(el);
-  window.getSelection().removeAllRanges();
-  window.getSelection().addRange(range);
-  document.execCommand("copy");
-  alert("Firma copiada");
-}
-
-updateSignature();
-
-</script>
+    updateSignature();
+  </script>
 
 </body>
 </html>

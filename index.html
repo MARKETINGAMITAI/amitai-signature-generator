@@ -126,7 +126,7 @@
   <main class="page">
 
     <div class="header">
-      <img src="https://www.amitai.com/es/wp-content/uploads/2025/04/amitai-logo.png" alt="AMITAI">
+      <img src="media/logo.png" alt="AMITAI">
       <h1>Generador de Firmas AMITAI</h1>
       <p>Completa tus datos, selecciona el banner activo y copia tu firma institucional.</p>
     </div>
@@ -161,8 +161,7 @@
         <button class="secondary" onclick="copyHTML()">Copiar HTML</button>
 
         <p class="note">
-          Recomendado: usa “Copiar firma” y pégala directamente en Gmail o Outlook.
-          Si no conserva el diseño, usa “Copiar HTML”.
+          Puedes usar banners en PNG, JPG o GIF. Para Outlook, el primer frame del GIF debe funcionar como imagen estática.
         </p>
       </section>
 
@@ -177,17 +176,19 @@
   </main>
 
   <script>
+    const logoUrl = "media/logo.png";
+
     const banners = {
       ethics: {
-        img: "https://www.amitai.com/es/wp-content/uploads/2026/04/banner-ethics-learning.png",
+        img: "media/banner-ethics.gif",
         link: "https://www.amitai.com/es/ethics-learning/"
       },
       empresas: {
-        img: "https://www.amitai.com/es/wp-content/uploads/2026/04/banner-empresas-mas-eticas.png",
+        img: "media/banner-empresas.png",
         link: "https://www.empresasmaseticas.com/"
       },
       integriline: {
-        img: "https://www.amitai.com/es/wp-content/uploads/2026/04/banner-integriline.png",
+        img: "media/banner-integriline.png",
         link: "https://www.integriline.com/"
       },
       none: null
@@ -204,52 +205,58 @@
 
       const bannerHTML = banner ? `
         <tr>
-          <td colspan="2" style="padding-top:14px;">
+          <td style="padding-bottom:14px;">
             <a href="${banner.link}" target="_blank">
-              <img src="${banner.img}" alt="Banner AMITAI" style="display:block; width:420px; max-width:100%; border:0;">
+              <img src="${banner.img}" alt="Banner AMITAI" style="display:block; width:520px; max-width:100%; border:0;">
             </a>
           </td>
         </tr>
       ` : "";
 
       return `
-        <table cellpadding="0" cellspacing="0" border="0" style="font-family:Arial, sans-serif; color:#1d2433; max-width:520px;">
+        <table cellpadding="0" cellspacing="0" border="0" style="font-family:Arial, sans-serif; color:#1d2433; max-width:540px;">
+          ${bannerHTML}
+
           <tr>
-            <td style="padding-right:16px; vertical-align:top;">
-              <img src="https://www.amitai.com/es/wp-content/uploads/2025/04/amitai-logo.png" alt="AMITAI" style="width:118px; display:block;">
-            </td>
+            <td>
+              <table cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td style="padding-right:16px; vertical-align:top;">
+                    <img src="${logoUrl}" alt="AMITAI" style="width:118px; display:block; border:0;">
+                  </td>
 
-            <td style="border-left:2px solid #003c71; padding-left:16px; vertical-align:top;">
-              <div style="font-size:16px; font-weight:700; color:#003c71;">
-                ${name}
-              </div>
+                  <td style="border-left:2px solid #003c71; padding-left:16px; vertical-align:top;">
+                    <div style="font-size:16px; font-weight:700; color:#003c71;">
+                      ${name}
+                    </div>
 
-              <div style="font-size:13px; color:#555; margin-top:3px;">
-                ${position}
-              </div>
+                    <div style="font-size:13px; color:#555; margin-top:3px;">
+                      ${position}
+                    </div>
 
-              <div style="font-size:13px; color:#555; margin-top:8px;">
-                <strong>Email:</strong>
-                <a href="mailto:${email}" style="color:#003c71; text-decoration:none;">${email}</a>
-              </div>
+                    <div style="font-size:13px; color:#555; margin-top:8px;">
+                      <strong>Email:</strong>
+                      <a href="mailto:${email}" style="color:#003c71; text-decoration:none;">${email}</a>
+                    </div>
 
-              <div style="font-size:13px; color:#555; margin-top:3px;">
-                <strong>Tel:</strong> ${phone}
-              </div>
+                    <div style="font-size:13px; color:#555; margin-top:3px;">
+                      <strong>Tel:</strong> ${phone}
+                    </div>
 
-              <div style="font-size:13px; color:#555; margin-top:3px;">
-                <strong>Oficina:</strong> ${country}
-              </div>
+                    <div style="font-size:13px; color:#555; margin-top:3px;">
+                      <strong>Oficina:</strong> ${country}
+                    </div>
 
-              <div style="font-size:13px; margin-top:8px;">
-                <a href="https://www.amitai.com/" target="_blank" style="color:#003c71; text-decoration:none; font-weight:700;">
-                  www.amitai.com
-                </a>
-              </div>
+                    <div style="font-size:13px; margin-top:8px;">
+                      <a href="https://www.amitai.com/" target="_blank" style="color:#003c71; text-decoration:none; font-weight:700;">
+                        www.amitai.com
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+              </table>
             </td>
           </tr>
-
-          ${bannerHTML}
         </table>
       `;
     }

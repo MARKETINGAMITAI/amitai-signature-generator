@@ -1,295 +1,188 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Generador de Firmas AMITAI</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generador de Firmas AMITAI</title>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f4f7fb;
-      color: #1d2433;
-    }
+<style>
+body {
+  margin:0;
+  font-family: Arial, sans-serif;
+  background:#f4f7fb;
+}
 
-    .page {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 48px 24px;
-    }
+.page {
+  max-width:1100px;
+  margin:auto;
+  padding:40px 20px;
+}
 
-    .header {
-      text-align: center;
-      margin-bottom: 36px;
-    }
+.header {
+  text-align:center;
+  margin-bottom:30px;
+}
 
-    .header img {
-      width: 150px;
-      margin-bottom: 18px;
-    }
+.header img {
+  width:140px;
+}
 
-    .header h1 {
-      margin: 0;
-      font-size: 32px;
-      color: #003c71;
-    }
+.grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+}
 
-    .header p {
-      color: #667085;
-      font-size: 16px;
-    }
+.card {
+  background:#fff;
+  padding:20px;
+  border-radius:14px;
+}
 
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 28px;
-    }
+input, select {
+  width:100%;
+  padding:10px;
+  margin-bottom:12px;
+}
 
-    .card {
-      background: #ffffff;
-      border-radius: 18px;
-      padding: 28px;
-      box-shadow: 0 14px 40px rgba(0, 60, 113, 0.08);
-    }
+button {
+  width:100%;
+  padding:12px;
+  margin-top:8px;
+  border:none;
+  cursor:pointer;
+}
 
-    label {
-      display: block;
-      font-size: 13px;
-      font-weight: 700;
-      margin-bottom: 6px;
-      color: #003c71;
-    }
+.primary {
+  background:#003c71;
+  color:#fff;
+}
 
-    input, select {
-      width: 100%;
-      padding: 12px 14px;
-      margin-bottom: 16px;
-      border: 1px solid #d0d5dd;
-      border-radius: 10px;
-      font-size: 14px;
-      box-sizing: border-box;
-    }
-
-    button {
-      width: 100%;
-      border: none;
-      border-radius: 12px;
-      padding: 14px 18px;
-      font-weight: 700;
-      cursor: pointer;
-      margin-top: 10px;
-      font-size: 15px;
-    }
-
-    .primary {
-      background: #003c71;
-      color: white;
-    }
-
-    .secondary {
-      background: #eaf3fb;
-      color: #003c71;
-    }
-
-    .preview-title {
-      font-size: 14px;
-      color: #667085;
-      margin-bottom: 16px;
-      font-weight: 700;
-    }
-
-    .signature-box {
-      border: 1px dashed #ccd6e0;
-      padding: 22px;
-      border-radius: 14px;
-      background: #fff;
-      overflow-x: auto;
-    }
-
-    .note {
-      font-size: 13px;
-      color: #667085;
-      margin-top: 18px;
-      line-height: 1.5;
-    }
-
-    @media (max-width: 850px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+.signature-box {
+  border:1px dashed #ccc;
+  padding:20px;
+}
+</style>
 </head>
 
 <body>
-  <main class="page">
 
-    <div class="header">
-      <img src="media/logo.png" alt="AMITAI">
-      <h1>Generador de Firmas AMITAI</h1>
-      <p>Completa tus datos, selecciona el banner activo y copia tu firma institucional.</p>
-    </div>
+<div class="page">
 
-    <div class="grid">
+<div class="header">
+  <img src="media/logo-amitai.png">
+  <h2>Generador de Firmas AMITAI</h2>
+</div>
 
-      <section class="card">
-        <label>Nombre completo</label>
-        <input id="name" value="Juan Palao García" oninput="updateSignature()" />
+<div class="grid">
 
-        <label>Puesto</label>
-        <input id="position" value="Gerente de Marketing" oninput="updateSignature()" />
+<div class="card">
 
-        <label>Correo</label>
-        <input id="email" value="juan.palao@amitai.com" oninput="updateSignature()" />
+<input id="name" placeholder="Nombre" value="Juan Palao García" oninput="updateSignature()">
+<input id="position" placeholder="Puesto" value="Gerente de Marketing" oninput="updateSignature()">
+<input id="email" placeholder="Correo" value="juan@amitai.com" oninput="updateSignature()">
+<input id="phone" placeholder="Teléfono" value="+52 55 0000 0000" oninput="updateSignature()">
+<input id="country" placeholder="País" value="México" oninput="updateSignature()">
 
-        <label>Teléfono</label>
-        <input id="phone" value="+52 55 0000 0000" oninput="updateSignature()" />
+<select id="banner" onchange="updateSignature()">
+  <option value="ethics">Ethics Learning</option>
+  <option value="empresas">Empresas Más Éticas</option>
+  <option value="none">Sin banner</option>
+</select>
 
-        <label>País / Oficina</label>
-        <input id="country" value="México" oninput="updateSignature()" />
+<button class="primary" onclick="copySignature()">Copiar firma</button>
 
-        <label>Banner de temporada</label>
-        <select id="banner" onchange="updateSignature()">
-          <option value="ethics">Ethics Learning</option>
-          <option value="empresas">Empresas Más Éticas</option>
-          <option value="integriline">Integri-Line</option>
-          <option value="none">Sin banner</option>
-        </select>
+</div>
 
-        <button class="primary" onclick="copySignature()">Copiar firma</button>
-        <button class="secondary" onclick="copyHTML()">Copiar HTML</button>
+<div class="card">
+<div class="signature-box" id="signature"></div>
+</div>
 
-        <p class="note">
-          Puedes usar banners en PNG, JPG o GIF. Para Outlook, el primer frame del GIF debe funcionar como imagen estática.
-        </p>
-      </section>
+</div>
+</div>
 
-      <section class="card">
-        <div class="preview-title">Vista previa de la firma</div>
-        <div class="signature-box">
-          <div id="signature"></div>
-        </div>
-      </section>
+<script>
 
-    </div>
-  </main>
+const logoUrl = "media/logo-amitai.png";
 
-  <script>
-    const logoUrl = "media/logo.png";
+const banners = {
+  ethics: {
+    img: "media/banner-ethics.gif",
+    link: "https://www.amitai.com/es/ethics-learning/"
+  },
+  empresas: {
+    img: "media/banner-empresas.png",
+    link: "https://www.empresasmaseticas.com/"
+  },
+  none: null
+};
 
-    const banners = {
-      ethics: {
-        img: "media/banner-ethics.gif",
-        link: "https://www.amitai.com/es/ethics-learning/"
-      },
-      empresas: {
-        img: "media/banner-empresas.png",
-        link: "https://www.empresasmaseticas.com/"
-      },
-      integriline: {
-        img: "media/banner-integriline.png",
-        link: "https://www.integriline.com/"
-      },
-      none: null
-    };
+function getSignatureHTML() {
 
-    function getSignatureHTML() {
-      const name = document.getElementById("name").value;
-      const position = document.getElementById("position").value;
-      const email = document.getElementById("email").value;
-      const phone = document.getElementById("phone").value;
-      const country = document.getElementById("country").value;
-      const bannerKey = document.getElementById("banner").value;
-      const banner = banners[bannerKey];
+  const name = document.getElementById("name").value;
+  const position = document.getElementById("position").value;
+  const email = document.getElementById("email").value;
+  const phone = document.getElementById("phone").value;
+  const country = document.getElementById("country").value;
+  const banner = banners[document.getElementById("banner").value];
 
-      const bannerHTML = banner ? `
-        <tr>
-          <td style="padding-bottom:14px;">
-            <a href="${banner.link}" target="_blank">
-              <img src="${banner.img}" alt="Banner AMITAI" style="display:block; width:520px; max-width:100%; border:0;">
-            </a>
-          </td>
-        </tr>
-      ` : "";
+  const bannerHTML = banner ? `
+  <tr>
+    <td>
+      <a href="${banner.link}" target="_blank">
+        <img src="${banner.img}" style="width:520px; max-width:100%;">
+      </a>
+    </td>
+  </tr>` : "";
 
-      return `
-        <table cellpadding="0" cellspacing="0" border="0" style="font-family:Arial, sans-serif; color:#1d2433; max-width:540px;">
-          ${bannerHTML}
+  return `
+  <table style="font-family:Arial; max-width:520px;">
+    
+    ${bannerHTML}
 
+    <tr>
+      <td>
+        <table>
           <tr>
-            <td>
-              <table cellpadding="0" cellspacing="0" border="0">
-                <tr>
-                  <td style="padding-right:16px; vertical-align:top;">
-                    <img src="${logoUrl}" alt="AMITAI" style="width:118px; display:block; border:0;">
-                  </td>
+            <td style="padding-right:15px;">
+              <img src="${logoUrl}" style="width:110px;">
+            </td>
 
-                  <td style="border-left:2px solid #003c71; padding-left:16px; vertical-align:top;">
-                    <div style="font-size:16px; font-weight:700; color:#003c71;">
-                      ${name}
-                    </div>
+            <td style="border-left:2px solid #003c71; padding-left:15px;">
+              <strong style="color:#003c71;">${name}</strong><br>
+              ${position}<br><br>
 
-                    <div style="font-size:13px; color:#555; margin-top:3px;">
-                      ${position}
-                    </div>
+              <a href="mailto:${email}">${email}</a><br>
+              ${phone}<br>
+              ${country}<br><br>
 
-                    <div style="font-size:13px; color:#555; margin-top:8px;">
-                      <strong>Email:</strong>
-                      <a href="mailto:${email}" style="color:#003c71; text-decoration:none;">${email}</a>
-                    </div>
-
-                    <div style="font-size:13px; color:#555; margin-top:3px;">
-                      <strong>Tel:</strong> ${phone}
-                    </div>
-
-                    <div style="font-size:13px; color:#555; margin-top:3px;">
-                      <strong>Oficina:</strong> ${country}
-                    </div>
-
-                    <div style="font-size:13px; margin-top:8px;">
-                      <a href="https://www.amitai.com/" target="_blank" style="color:#003c71; text-decoration:none; font-weight:700;">
-                        www.amitai.com
-                      </a>
-                    </div>
-                  </td>
-                </tr>
-              </table>
+              <a href="https://www.amitai.com/">www.amitai.com</a>
             </td>
           </tr>
         </table>
-      `;
-    }
+      </td>
+    </tr>
 
-    function updateSignature() {
-      document.getElementById("signature").innerHTML = getSignatureHTML();
-    }
+  </table>`;
+}
 
-    function copySignature() {
-      const signature = document.getElementById("signature");
-      const range = document.createRange();
-      range.selectNode(signature);
-      window.getSelection().removeAllRanges();
-      window.getSelection().addRange(range);
+function updateSignature() {
+  document.getElementById("signature").innerHTML = getSignatureHTML();
+}
 
-      try {
-        document.execCommand("copy");
-        alert("Firma copiada. Ahora pégala en Gmail u Outlook.");
-      } catch (err) {
-        alert("No se pudo copiar automáticamente. Selecciona la firma manualmente.");
-      }
+function copySignature() {
+  const el = document.getElementById("signature");
+  const range = document.createRange();
+  range.selectNode(el);
+  window.getSelection().removeAllRanges();
+  window.getSelection().addRange(range);
+  document.execCommand("copy");
+  alert("Firma copiada");
+}
 
-      window.getSelection().removeAllRanges();
-    }
+updateSignature();
 
-    function copyHTML() {
-      const html = getSignatureHTML();
-      navigator.clipboard.writeText(html);
-      alert("HTML copiado.");
-    }
-
-    updateSignature();
-  </script>
+</script>
 
 </body>
 </html>
